@@ -1,35 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printptr.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kraksana <kraksana@student.42bangkok.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/10/01 09:14:21 by kraksana          #+#    #+#             */
+/*   Updated: 2026/10/01 09:18:54 by kraksana         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-static int	ft_printstat(unsigned long long stat, int c);
-
-int	ft_printptr(unsigned long long ptr)
+static int	ft_print_address(unsigned long long ptr)
 {
-	int					length;
+	int		length;
+	char	*base;
 
 	length = 0;
-	if (!ptr)
-		length += ft_printstr("(nil)");
-	else
-	{
-		length += ft_printstr("0x");
-		length += ft_printstat(ptr, 'x');
-	}
+	base = "0123456789abcdef";
+	if (ptr >= 16)
+		length += ft_print_address(ptr / 16);
+	length += write(1, &base[ptr % 16], 1);
 	return (length);
 }
 
-static int	ft_printstat(unsigned long long stat, int c)
+int	ft_printptr(unsigned long long ptr)
 {
-	int		length;
-	char	*str_stat;
+	int	length;
 
 	length = 0;
-	str_stat = "0123456789abcdef";
-	if (stat < 16)
-		length += write(1, &str_stat[stat], 1);
-	if (stat >= 16)
-	{
-		length += ft_printstat((stat / 16), c);
-		length += write(1, &str_stat[(stat % 16)], 1);
-	}
+	if (!ptr)
+		return (ft_printstr("(nil)"));
+	length += ft_printstr("0x");
+	length += ft_print_address(ptr);
 	return (length);
 }

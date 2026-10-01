@@ -10,7 +10,7 @@ SRCS =  ft_printf.c \
 		ft_printhex.c \
 		ft_printptr.c \
 		ft_printstr.c \
-		ft_print_unsigned.c \
+		ft_printf_unsigned.c \
 
 OBJS = ${SRCS:.c=.o}
 
